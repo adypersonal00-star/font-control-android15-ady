@@ -1,0 +1,34 @@
+name: Build Font Control Android APK
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'Font-Control-Android15-source.zip'
+      - '.github/workflows/build-font-apk.yml'
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Extract app source
+        run: unzip -q Font-Control-Android15-source.zip -d .
+      - name: Build debug APK
+        run: gradle -p font-control assembleDebug --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Font-Control-Android15-debug-apk
+          path: font-control/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 30
