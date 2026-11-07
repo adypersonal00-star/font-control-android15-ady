@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'Font-Control-Android15-source.zip'
+      - 'Font-Control-Android15-source-v2.zip'
       - '.github/workflows/build-font-apk.yml'
 permissions:
   contents: read
@@ -23,7 +23,7 @@ jobs:
         with:
           gradle-version: '8.9'
       - name: Extract app source
-        run: unzip -q Font-Control-Android15-source.zip -d .
+        run: unzip -q Font-Control-Android15-source-v2.zip -d .
       - name: Build debug APK
         run: gradle -p font-control assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
